@@ -34,4 +34,5 @@ book.delete()
 print(Book.objects.all())
 
 #output
+(<Book: Nineteen Eighty-Four by George Orwell>,)
 <QuerySet []>
