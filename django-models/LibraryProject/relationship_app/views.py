@@ -53,12 +53,29 @@ def logout_view(request):
 
 
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from .models import UserProfile
+
+@login_required
+def admin_view(request):
+    try:
+        if request.user.userprofile.role == 'Admin':
+            return render(request, 'relationship_app/admin_view.html')
+        else:
+            return HttpResponseForbidden("You are not authorized to view this page.")
+    except UserProfile.DoesNotExist:
+        return HttpResponseForbidden("No profile found.")
+
+
+
+
+
+from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
 from .models import UserProfile
 
 # Helper functions to check roles
-def is_admin(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
 def is_librarian(user):
     return hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
