@@ -53,19 +53,29 @@ def logout_view(request):
 
 
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
 from .models import UserProfile
 
-@login_required
+def role_required(required_role):
+    def decorator(view_func):
+        def _wrapped_view(request, *args, **kwargs):
+            if not request.user.is_authenticated:
+                return HttpResponse("Unauthorized", status=401)
+            try:
+                if request.user.userprofile.role == required_role:
+                    return view_func(request, *args, **kwargs)
+                else:
+                    return HttpResponse("Forbidden", status=403)
+            except UserProfile.DoesNotExist:
+                return HttpResponse("No profile found", status=403)
+        return _wrapped_view
+    return decorator
+
+@role_required('Admin')
 def admin_view(request):
-    try:
-        if request.user.userprofile.role == 'Admin':
-            return render(request, 'relationship_app/admin_view.html')
-        else:
-            return HttpResponseForbidden("You are not authorized to view this page.")
-    except UserProfile.DoesNotExist:
-        return HttpResponseForbidden("No profile found.")
+    return HttpResponse("Welcome Admin!")
+
 
 
 
