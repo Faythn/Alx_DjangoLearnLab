@@ -14,6 +14,19 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+  
+    class Meta:
+        # ✅ custom permissions (distinct from Django's default add/change/delete)
+        permissions = (
+            ("can_add_book", "Can add book"),
+            ("can_change_book", "Can change book"),
+            ("can_delete_book", "Can delete book"),
+        )
+
+
+
 
 # Library model
 class Library(models.Model):
