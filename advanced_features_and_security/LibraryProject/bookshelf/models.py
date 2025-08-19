@@ -1,17 +1,29 @@
 from django.db import models
-
-class Book(models.Model):
-    title = models.CharField(max_length=200)
-    author = models.CharField(max_length=100)
-    publication_year = models.IntegerField()
-
-    def __str__(self):
-        return f"{self.title} by {self.author}"
-
-from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
+# --------------------------
+# Book Model with Permissions
+# --------------------------
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.CharField(max_length=120, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        permissions = [
+            ("can_view", "Can view books (custom)"),
+            ("can_create", "Can create books (custom)"),
+            ("can_edit", "Can edit books (custom)"),
+            ("can_delete", "Can delete books (custom)"),
+        ]
+
+    def __str__(self):
+        return self.title
+
+
+# --------------------------
 # Custom User Manager
+# --------------------------
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
         if not email:
@@ -26,19 +38,22 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
-        if extra_fields.get("is_staff") is not True:
+        if not extra_fields.get("is_staff"):
             raise ValueError("Superuser must have is_staff=True.")
-        if extra_fields.get("is_superuser") is not True:
+        if not extra_fields.get("is_superuser"):
             raise ValueError("Superuser must have is_superuser=True.")
 
         return self.create_user(username, email, password, **extra_fields)
 
+
+# --------------------------
 # Custom User Model
+# --------------------------
 class CustomUser(AbstractUser):
     date_of_birth = models.DateField(null=True, blank=True)
     profile_photo = models.ImageField(upload_to="profile_photos/", null=True, blank=True)
 
-    objects = CustomUserManager()  # Link to custom manager
+    objects = CustomUserManager()
 
     def __str__(self):
         return self.username
