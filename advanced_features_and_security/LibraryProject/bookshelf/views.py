@@ -41,3 +41,24 @@ def delete_book(request, book_id):
         return redirect("book_list")
     return render(request, "bookshelf/delete_book.html", {"book": book})
 
+from django.shortcuts import render
+from .forms import ExampleForm  # ✅ Import ExampleForm safely
+from .models import Book
+
+def form_example_view(request):
+    if request.method == "POST":
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # ✅ Safe access to validated input
+            name = form.cleaned_data["name"]
+            message = form.cleaned_data["message"]
+            return render(request, "bookshelf/form_example.html", {"form": form, "success": True})
+    else:
+        form = ExampleForm()
+    return render(request, "bookshelf/form_example.html", {"form": form})
+
+def book_list_view(request):
+    # ✅ Safe ORM query (no raw SQL → prevents SQL injection)
+    books = Book.objects.select_related("author").all()
+    return render(request, "bookshelf/book_list.html", {"books": books})
+

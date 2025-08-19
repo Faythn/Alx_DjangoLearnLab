@@ -125,3 +125,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Add this line at the bottom
 AUTH_USER_MODEL = "bookshelf.CustomUser"
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False   # ✅ Always False in production
+
+ALLOWED_HOSTS = ["*"]  # Replace with your domain/IP in production
+
+# ✅ Browser-side protections
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
+
+# ✅ Secure cookies (only sent via HTTPS)
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# ✅ Content Security Policy (if django-csp is installed)
+# MIDDLEWARE += ["csp.middleware.CSPMiddleware"]
+# CSP_DEFAULT_SRC = ("'self'",)
+# CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com")
+# CSP_SCRIPT_SRC = ("'self'",)
+
