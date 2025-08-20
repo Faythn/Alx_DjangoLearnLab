@@ -152,6 +152,8 @@ DEBUG = False   # ✅ Always False in production
 ALLOWED_HOSTS = ["*"]  # Replace with your domain/IP in production
 
 # ✅ Browser-side protections
+# Tell Django to trust the X-Forwarded-Proto header from the proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
