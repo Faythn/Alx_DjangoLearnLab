@@ -22,3 +22,12 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
      path('api/', include('posts.urls')),      # ✅ new posts rout
 ]
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("api/accounts/", include("accounts.urls")),  # follow/unfollow live here
+    path("api/posts/", include("posts.urls")),        # feed will live here
+]

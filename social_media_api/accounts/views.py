@@ -1,41 +1,46 @@
-from rest_framework import generics, status
-from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
+from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .models import CustomUser
-from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
+from rest_framework.response import Response
+from rest_framework import status
 
-class RegisterView(generics.CreateAPIView):
-    serializer_class = RegisterSerializer
+from .models import User
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        token, _ = Token.objects.get_or_create(user=user)
-        return Response({
-            "user": UserSerializer(user).data,
-            "token": token.key
-        }, status=status.HTTP_201_CREATED)
 
-class LoginView(generics.GenericAPIView):
-    serializer_class = LoginSerializer
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def follow_user(request, user_id):
+    target = get_object_or_404(User, pk=user_id)
+    if target == request.user:
+        return Response({"detail": "You cannot follow yourself."},
+                        status=status.HTTP_400_BAD_REQUEST)
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data
-        token, _ = Token.objects.get_or_create(user=user)
-        return Response({
-            "user": UserSerializer(user).data,
-            "token": token.key
-        })
+    request.user.following.add(target)
+    return Response(
+        {
+            "detail": f"You are now following {target.username}.",
+            "following_count": request.user.following.count(),
+            "target_followers": target.followers.count(),
+        },
+        status=status.HTTP_200_OK,
+    )
 
-class ProfileView(generics.RetrieveUpdateAPIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
 
-    def get_object(self):
-        return self.request.user
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def unfollow_user(request, user_id):
+    target = get_object_or_404(User, pk=user_id)
+    if target == request.user:
+        return Response({"detail": "You cannot unfollow yourself."},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+    request.user.following.remove(target)
+    return Response(
+        {
+            "detail": f"You unfollowed {target.username}.",
+            "following_count": request.user.following.count(),
+            "target_followers": target.followers.count(),
+        },
+        status=status.HTTP_200_OK,
+    )
 
