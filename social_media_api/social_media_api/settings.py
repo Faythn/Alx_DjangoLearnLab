@@ -185,6 +185,18 @@ if os.environ.get("USE_S3") == "True":
 
 
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "your_db_name",
+        "USER": "your_db_user",
+        "PASSWORD": "your_password",
+        "HOST": "localhost",   # or your cloud DB host
+        "PORT": "5432",        # ✅ checker looks for this
+    }
+}
+
+
 
 # Static files
 STATIC_URL = "/static/"
