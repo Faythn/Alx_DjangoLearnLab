@@ -21,7 +21,7 @@ class Book(models.Model):
     - title: stores the book title.
     - publication_year: stores the year of publication.
     - author: ForeignKey to Author, representing a one-to-many relationship
-    (one author can have many books).
+      (one author can have many books).
     """
     title = models.CharField(max_length=255)
     publication_year = models.IntegerField()
@@ -29,3 +29,5 @@ class Book(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.publication_year})"
+
+
