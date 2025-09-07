@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1ay@lbuhw#xda20i)45&pm2%o)25t0r+jqz#!2bz9+^-3w)^y!'
+SECRET_KEY = 'django-insecure-%pgj74pq3#(70$3xp@c68irfszbdu$ui)04uik8bh$j&wq+33h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -117,21 +117,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-
-STATIC_URL = "static/"
 
 TEMPLATES = [
     {
@@ -148,3 +133,11 @@ TEMPLATES = [
         },
     },
 ]
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
