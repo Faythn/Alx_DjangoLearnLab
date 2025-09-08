@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%pgj74pq3#(70$3xp@c68irfszbdu$ui)04uik8bh$j&wq+33h'
+SECRET_KEY = 'django-insecure-q%k1!@zbh89&i4sizp!i=+-w@2=#qr&-mj)xdb37@nrn2^+b0@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -117,27 +117,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-
-TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],  # can stay empty or add global templates folder
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-            ],
-        },
-    },
-]
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-
