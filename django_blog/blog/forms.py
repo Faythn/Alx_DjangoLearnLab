@@ -1,18 +1,12 @@
-# blog/forms.py
 from django import forms
-from .models import Post
+from .models import Post, Comment
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ["title", "content"]
-from django import forms
-from .models import Comment
+        fields = ["title", "content", "tags"]   # ✅ include tags
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ["content"]  # only content is editable by users
-        widgets = {
-            "content": forms.Textarea(attrs={"rows": 3, "placeholder": "Add a comment..."}),
-        }
+        fields = ["content"]
