@@ -15,3 +15,11 @@ urlpatterns = [
     path("post/<int:pk>/delete/", PostDeleteView.as_view(), name="post-delete"),
 ]
 
+from .views import CommentCreateView, CommentUpdateView, CommentDeleteView
+
+urlpatterns = [
+    # existing post urls...
+    path("posts/<int:post_id>/comments/new/", CommentCreateView.as_view(), name="comment-create"),
+    path("comments/<int:pk>/edit/", CommentUpdateView.as_view(), name="comment-update"),
+    path("comments/<int:pk>/delete/", CommentDeleteView.as_view(), name="comment-delete"),
+]
